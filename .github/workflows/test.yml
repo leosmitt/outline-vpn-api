@@ -26,7 +26,6 @@ jobs:
         bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)" > ./outline-install.log
     - name: Install dependencies
       run: |
-        pip install poetry
         poetry install --no-root
     - name: Test with pytest
       run: |
