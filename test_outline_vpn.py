@@ -19,7 +19,7 @@ def client() -> OutlineVPN:
     api_data = json.loads(json_text)
     api_url = re.sub("https://[^:]+:", "https://127.0.0.1:", api_data.get("apiUrl"))
 
-    client = OutlineVPN(api_url=api_url, cert_sha256=api_data.get("certSha256"))
+    client = OutlineVPN(api_url=api_url, cert_sha256=api_data.get("certSha256"), cert_path="./shadowbox-selfsigned.crt")
 
     return client
 
@@ -92,17 +92,20 @@ def test_create_key_with_attributes_and_id(client: OutlineVPN):
 
 def test_limits(client: OutlineVPN):  # pylint: disable=W0621
     """Test setting, retrieving and removing custom limits"""
-    new_limit = 1024 * 1024 * 20
-    target_key_id = 0
+    new_key = client.create_key()
+    assert new_key is not None
+    assert int(new_key.key_id) > 0
 
-    assert client.add_data_limit(target_key_id, new_limit)
+    new_limit = 1024 * 1024 * 20
+
+    assert client.add_data_limit(new_key.key_id, new_limit)
 
     keys = client.get_keys()
     for key in keys:
-        if key.key_id == target_key_id:
+        if key.key_id == new_key.key_id:
             assert key.data_limit == new_limit
 
-    assert client.delete_data_limit(target_key_id)
+    assert client.delete_data_limit(new_key.key_id)
 
 
 def test_server_methods(client: OutlineVPN):
