@@ -73,13 +73,13 @@ class OutlineVPN:
     An Outline VPN connection
     """
 
-    def __init__(self, api_url: str, cert_sha256: str):
+    def __init__(self, api_url: str, cert_sha256: str, cert_path: str = None):
         self.api_url = api_url
 
         if cert_sha256:
             session = requests.Session()
             session.mount("https://", _FingerprintAdapter(cert_sha256))
-            session.verify = False
+            session.verify = cert_path if cert_path else False
             self.session = session
         else:
             raise OutlineLibraryException(
