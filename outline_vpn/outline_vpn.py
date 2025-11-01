@@ -79,6 +79,7 @@ class OutlineVPN:
         if cert_sha256:
             session = requests.Session()
             session.mount("https://", _FingerprintAdapter(cert_sha256))
+            session.verify = False
             self.session = session
         else:
             raise OutlineLibraryException(
@@ -88,11 +89,11 @@ class OutlineVPN:
     def get_keys(self, timeout: int = None) -> list[OutlineKey]:
         """Get all keys in the outline server"""
         response = self.session.get(
-            f"{self.api_url}/access-keys/", verify=False, timeout=timeout
+            f"{self.api_url}/access-keys/", timeout=timeout
         )
         if response.status_code == 200 and "accessKeys" in response.json():
             response_metrics = self.session.get(
-                f"{self.api_url}/metrics/transfer", verify=False
+                f"{self.api_url}/metrics/transfer"
             )
             if (
                 response_metrics.status_code >= 400
@@ -109,13 +110,13 @@ class OutlineVPN:
 
     def get_key(self, key_id: str, timeout: int = None) -> OutlineKey:
         response = self.session.get(
-            f"{self.api_url}/access-keys/{key_id}", verify=False, timeout=timeout
+            f"{self.api_url}/access-keys/{key_id}", timeout=timeout
         )
         if response.status_code == 200:
             key = response.json()
 
             response_metrics = self.session.get(
-                f"{self.api_url}/metrics/transfer", verify=False, timeout=timeout
+                f"{self.api_url}/metrics/transfer", timeout=timeout
             )
             if (
                 response_metrics.status_code >= 400
@@ -176,7 +177,7 @@ class OutlineVPN:
     def delete_key(self, key_id: str, timeout: int = None) -> bool:
         """Delete a key"""
         response = self.session.delete(
-            f"{self.api_url}/access-keys/{key_id}", verify=False, timeout=timeout
+            f"{self.api_url}/access-keys/{key_id}", timeout=timeout
         )
         return response.status_code == 204
 
@@ -227,7 +228,7 @@ class OutlineVPN:
             }
         }"""
         response = self.session.get(
-            f"{self.api_url}/metrics/transfer", verify=False, timeout=timeout
+            f"{self.api_url}/metrics/transfer", timeout=timeout
         )
         if (
             response.status_code >= 400
@@ -250,7 +251,7 @@ class OutlineVPN:
         }
         """
         response = self.session.get(
-            f"{self.api_url}/server", verify=False, timeout=timeout
+            f"{self.api_url}/server", timeout=timeout
         )
         if response.status_code != 200:
             raise OutlineServerErrorException(
@@ -262,7 +263,7 @@ class OutlineVPN:
         """Renames the server"""
         data = {"name": name}
         response = self.session.put(
-            f"{self.api_url}/name", verify=False, json=data, timeout=timeout
+            f"{self.api_url}/name", json=data, timeout=timeout
         )
         return response.status_code == 204
 
@@ -281,7 +282,7 @@ class OutlineVPN:
     def get_metrics_status(self, timeout: int = None) -> bool:
         """Returns whether metrics is being shared"""
         response = self.session.get(
-            f"{self.api_url}/metrics/enabled", verify=False, timeout=timeout
+            f"{self.api_url}/metrics/enabled", timeout=timeout
         )
         return response.json().get("metricsEnabled")
 
@@ -289,7 +290,7 @@ class OutlineVPN:
         """Enables or disables sharing of metrics"""
         data = {"metricsEnabled": status}
         response = self.session.put(
-            f"{self.api_url}/metrics/enabled", verify=False, json=data, timeout=timeout
+            f"{self.api_url}/metrics/enabled", json=data, timeout=timeout
         )
         return response.status_code == 204
 
