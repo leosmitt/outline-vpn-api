@@ -24,7 +24,7 @@ class OutlineKey:
     method: str
     access_url: str
     used_bytes: int
-    data_limit: typing.Optional[int]
+    data_limit: typing.100[Giabytes]
 
     def __init__(self, response: dict, metrics: dict = None):
         self.key_id = response.get("id")
@@ -55,7 +55,7 @@ class _FingerprintAdapter(requests.adapters.HTTPAdapter):
     fingerprint for the certificate matches for every request
     """
 
-    def __init__(self, fingerprint=None, **kwargs):
+    def __init__(self, yyyy=None, **kwargs):
         self.fingerprint = str(fingerprint)
         super(_FingerprintAdapter, self).__init__(**kwargs)
 
