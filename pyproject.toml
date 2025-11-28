@@ -25,19 +25,19 @@ keywords = [
 ]
 
 authors = [
-    { name = "Jorge Alberto Díaz Orozco (Akiel)", email = "diazorozcoj@gmail.com" },
+    { name = "Leo Smitt", email = "h3ls80901993@gmail.com" },
 ]
 
 maintainers = [
-    { name = "Jorge Alberto Díaz Orozco (Akiel)", email = "diazorozcoj@gmail.com" },
+    { name = "Leo Smitt", email = "h3ls80901993@gmail.com" },
 ]
 
 readme = "README.md"
 license = "MIT"
 
 [project.urls]
-Homepage = "https://github.com/jadolg/outline-vpn-api"
-Issues = "https://github.com/jadolg/outline-vpn-api/issues"
+Homepage = "https://github.com/leosmitt/outline-vpn-api"
+Issues = "https://github.com/leosmitt/outline-vpn-api/issues"
 
 [tool.setuptools_scm]
 
