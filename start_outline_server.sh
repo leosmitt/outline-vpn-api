@@ -7,6 +7,6 @@ sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-
 echo "Outline Server installation completed."
 echo "Retrieving self-signed certificate..."
 sudo cp /opt/outline/persisted-state/shadowbox-selfsigned.crt .
-MYUSER=$(whoami)
-sudo chown ${MYUSER}:${MYUSER} shadowbox-selfsigned.crt
+leosmitt=$(whoami)
+sudo chown leosmitt:leosmitt  shadowbox-selfsigned.crt
 echo "Done"
